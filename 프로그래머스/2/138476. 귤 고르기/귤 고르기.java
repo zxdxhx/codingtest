@@ -1,31 +1,34 @@
 import java.util.*;
 class Solution {
     public int solution(int k, int[] tangerine) {
-        int[] count = new int[tangerine.length];
+        int answer = 0;
         Arrays.sort(tangerine);
         
-        int countnum = 1;
+        int[] count = new int[tangerine.length];
+        int cnt = 1;
         int index = 0;
         
-        for(int i = 1; i< tangerine.length+1; i++){
-            if(i < tangerine.length && tangerine[i-1] == tangerine[i]){
-                countnum++;
+        for(int i = 1; i <= tangerine.length; i++){
+            if(i == tangerine.length){  //마지막애 비교할때
+                count[index++] = cnt;
+                break;
+            }
+            if(tangerine[i]==tangerine[i-1]){
+                cnt++;
             }else{
-                count[index++] = countnum;
-                countnum = 1;
+                count[index++] = cnt;
+                cnt = 1;
             }
         }
-        
         Arrays.sort(count);
         
-        int sum = 0;
-        int answer = 0;
-        for(int i = count.length - 1; i > -1; i--){
-            if(sum >= k){
-                 break;
-            } else {
-                sum += count[i];
+        for(int i = count.length-1; i >= 0; i--){
+            if(k > count[i]){
+                answer++; 
+                k -= count[i];
+            }else if(k <= count[i]){
                 answer++;
+                break;
             }
         }
         return answer;
